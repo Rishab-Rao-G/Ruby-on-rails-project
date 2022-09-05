@@ -1,0 +1,42 @@
+<% if user_signed_in? %>
+
+  <table class="table table-striped table-bordered table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th> Employee Id </th>
+        <th> Name </th>
+        <th> Department </th>
+        <th> Email </th>
+        <th> Phone </th>
+        <th> User Id </th>
+        <th colspan="1"></th>
+      </tr>
+    </thead> 
+    <tbody>
+      <% @employees.each do |employee| %>
+        <% if employee.user == current_user %>
+          <tr>
+            <td><%= link_to employee.employee_idn, employee %></td>
+            <td><%= employee.first_name %> <%= employee.last_name %></td>
+            <td><%= employee.department %></td>
+            <td><%= employee.email %></td>
+            <td><%= employee.phone %></td>
+            <td><%= employee.user_id %>
+            <td><%= link_to 'Delete', employee, data: {
+                        turbo_method: :delete,
+                        turbo_confirm: "Are you sure?"
+                      }, class: "btn btn-outline-danger" %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody> 
+  </table>
+  <br> 
+
+  <%= link_to "New Employee", new_employee_path, class: "btn btn-secondary" %>
+
+<% else %>
+<h1>Home Page</h1>
+<p> <%= link_to 'Sign Up', new_user_registration_path %> or <%= link_to 'Sign In', new_user_session_path %> to use the Employee Management App</p>
+<p> Each user can create, update, edit or delete records in the Employee Management table. Users can only view the employee list created by other users but cannot modify or delete them. </p>
+<% end %>
